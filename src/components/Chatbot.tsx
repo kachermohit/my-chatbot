@@ -51,11 +51,8 @@ const Chatbot: React.FC = () => {
   }, [chatHistory]);
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Typography variant="h4" color="primary" align="center" gutterBottom>
-        <strong>CHAT BOT</strong>
-      </Typography>
-      <Paper sx={{ height: "60vh", overflow: "auto", p: 2, mb: 2 }}>
+    <Container maxWidth="md" sx={{ mt: 4 }} style={{ marginTop: "58px" }}>
+      <Paper sx={{ height: "55vh", overflow: "auto", p: 2, mb: 2 }}>
         {chatHistory.map((msg, index) => (
           <Box
             key={index}
