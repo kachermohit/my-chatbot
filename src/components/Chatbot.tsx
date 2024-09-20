@@ -7,8 +7,8 @@ import {
   Box,
   Paper,
 } from "@mui/material";
-import axios from "axios";
 import "highlight.js/styles/github.css"; // Or any other style you prefer
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface Message {
   sender: "user" | "bot";
@@ -20,8 +20,6 @@ const Chatbot: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<Message[]>([]); // Array of chat messages
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  const API_KEY = process.env.REACT_APP_API_KEY;
-
   const handleSendMessage = async () => {
     if (!inputMessage) return;
 
@@ -31,30 +29,15 @@ const Chatbot: React.FC = () => {
     ]);
 
     try {
-      const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
-        {
-          contents: [
-            {
-              parts: [
-                {
-                  text: inputMessage,
-                },
-              ],
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY!);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const botReply = response.data.candidates[0].content.parts[0].text;
+      const prompt = inputMessage;
+
+      const result = await model.generateContent(prompt);
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
-        { sender: "bot", text: botReply },
+        { sender: "bot", text: result.response.text() },
       ]);
     } catch (error) {
       console.error("Error sending message:", error);
