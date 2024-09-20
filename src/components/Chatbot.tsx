@@ -70,7 +70,7 @@ const Chatbot: React.FC = () => {
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Typography variant="h4" color="primary" align="center" gutterBottom>
-        <strong>CHATBOT</strong>
+        <strong>CHAT BOT</strong>
       </Typography>
       <Paper sx={{ height: "60vh", overflow: "auto", p: 2, mb: 2 }}>
         {chatHistory.map((msg, index) => (
